@@ -43,35 +43,40 @@ const CUSTOM_TEXT = [
     "                               YMMMM9   YMMMM9 _MM_      YMMM9 "
 ];
 
-    function calculateDimensions() {
-      const container = document.getElementById('canvasContainer');
-      canvas = document.getElementById('myCanvas');
-      ctx = canvas.getContext('2d');
+   function calculateDimensions() {
+  const container = document.getElementById('canvasContainer');
+  const canvasElement = document.getElementById('myCanvas');
 
-      canvas.width = container.clientWidth;
-      canvas.height = container.clientHeight;
+  if (container && canvasElement) { // Controllo di esistenza per container e canvas
+    canvas = canvasElement;
+    ctx = canvas.getContext('2d');
 
-      const textWidth = CUSTOM_TEXT[0].length;
-      const textHeight = CUSTOM_TEXT.length;
+    canvas.width = container.clientWidth;
+    canvas.height = container.clientHeight;
 
-      const availableWidth = canvas.width * (1 - 2 * MARGIN_PERCENTAGE / 100);
-      const availableHeight = canvas.height * (1 - 2 * MARGIN_PERCENTAGE / 100);
+    const textWidth = CUSTOM_TEXT[0].length;
+    const textHeight = CUSTOM_TEXT.length;
 
-      const fontSizeByWidth = availableWidth / textWidth;
-      const fontSizeByHeight = availableHeight / textHeight;
+    const availableWidth = canvas.width * (1 - 2 * MARGIN_PERCENTAGE / 100);
+    const availableHeight = canvas.height * (1 - 2 * MARGIN_PERCENTAGE / 100);
 
-      font_size = Math.floor(Math.min(fontSizeByWidth, fontSizeByHeight));
+    const fontSizeByWidth = availableWidth / textWidth;
+    const fontSizeByHeight = availableHeight / textHeight;
 
-      if (window.innerWidth <= 768) {
-        font_size = Math.max(font_size, 8);
-      }
+    font_size = Math.floor(Math.min(fontSizeByWidth, fontSizeByHeight));
 
-      char_width = Math.ceil(font_size * 0.6);
-      char_height = Math.ceil(font_size);
-
-      canvas_width = Math.ceil(canvas.width / char_width);
-      canvas_height = Math.ceil(canvas.height / char_height);
+    if (window.innerWidth <= 768) {
+      font_size = Math.max(font_size, 8);
     }
+
+    char_width = Math.ceil(font_size * 0.6);
+    char_height = Math.ceil(font_size);
+
+    canvas_width = Math.ceil(canvas.width / char_width);
+    canvas_height = Math.ceil(canvas.height / char_height);
+  }
+}
+
 
     function initializeWaveMap() {
       wave_map = new Array(canvas_height);
