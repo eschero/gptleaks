@@ -168,6 +168,21 @@ function draw() {
     expansion_progress++;
     requestAnimationFrame(draw);
 }
+    function easeInOutQuad(t) {
+    return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
+}
+
+    function lerp_char(a, b, t) {
+    let index_a = CHAR.indexOf(a);
+    let index_b = CHAR.indexOf(b);
+    if (index_a === -1 || index_b === -1) return t < 0.5 ? a : b;
+    let lerped_index = Math.floor(index_a + (index_b - index_a) * t);
+    return CHAR[lerped_index];
+}
+
+function map(value, in_min, in_max, out_min, out_max) {
+    return (value - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
+}
 
     function init() {
       setup();
