@@ -3,116 +3,99 @@ import { useEffect } from 'react';
 
 const AsciiAnimation = () => {
   useEffect(() => {
-"use strict";
+    "use strict";
 
-const CHAR = " 		       ~._^|',-!:}+{=/*;[]7oc><i?)(rlt1jsIz3vCuJ%5aYn\"298e0f&L6OS$VGZxTyUhP4wkDFdgqbRpmX@QAEHK#BNWM";
-const MAX = CHAR.length * 2 - 2;
-const FRAMES = 600;
-const BLUR_STEPS = 40;
-const EXPANSION_FRAMES = 240;
-const TRANSITION_FRAMES = 150;
-const OPACITY_START_OFFSET = 100;
-const MARGIN_PERCENTAGE = 20; // Percentuale di margine, modificabile
+    const CHAR = " 		       ~._^|',-!:}+{=/*;[]7oc><i?)(rlt1jsIz3vCuJ%5aYn\"298e0f&L6OS$VGZxTyUhP4wkDFdgqbRpmX@QAEHK#BNWM";
+    const MAX = CHAR.length * 2 - 2;
+    const FRAMES = 600;
+    const BLUR_STEPS = 40;
+    const EXPANSION_FRAMES = 240;
+    const TRANSITION_FRAMES = 150;
+    const OPACITY_START_OFFSET = 100;
+    const MARGIN_PERCENTAGE = 20;
 
-let canvas, ctx, font_size, char_width, char_height;
-let canvas_width, canvas_height;
-let wave_map;
-let expansion_progress = 0;
-let transition_completed = false;
+    let canvas, ctx, font_size, char_width, char_height;
+    let canvas_width, canvas_height;
+    let wave_map;
+    let expansion_progress = 0;
+    let transition_completed = false;
 
 const CUSTOM_TEXT = [
     "____    ____                                                   ",
-    "`MM'    `MM'                                                   ",
+    "MM'    MM'                                                   ",
     " MM      MM                                                    ",
     " MM      MM ___   ___ ___  __    __      ___   ___  __         ",
-    " MM      MM `MM    MM `MM 6MMb  6MMb   6MMMMb  `MM 6MMb        ",
-    " MMMMMMMMMM  MM    MM  MM69 `MM69 `Mb 8M'  `Mb  MMM9 `Mb       ",
+    " MM      MM MM    MM MM 6MMb  6MMb   6MMMMb  MM 6MMb        ",
+    " MMMMMMMMMM  MM    MM  MM69 MM69 Mb 8M'  Mb  MMM9 Mb       ",
     " MM      MM  MM    MM  MM'   MM'   MM     ,oMM  MM'   MM       ",
     " MM      MM  MM    MM  MM    MM    MM ,6MM9'MM  MM    MM       ",
     " MM      MM  MM    MM  MM    MM    MM MM'   MM  MM    MM       ",
     " MM      MM  YM.   MM  MM    MM    MM MM.  ,MM  MM    MM       ",
-    "_MM_    _MM_  YMMM9MM__MM_  _MM_  _MM_`YMMM9'Yb_MM_  _MM_/     ",
+    "_MM_    _MM_  YMMM9MM__MM_  _MM_  _MM_YMMM9'Yb_MM_  _MM_/     ",
     "                                ____     ____  ___  __  /M     ",
-    "                               6MMMMb.  6MMMMb `MM 6MM /MMMMM  ",
-    "                              6M'   Mb 6M'  `Mb MM69 \"  MM     ",
-    "                              MM    `' MM    MM MM'     MM     ",
+    "                               6MMMMb.  6MMMMb MM 6MM /MMMMM  ",
+    "                              6M'   Mb 6M'  Mb MM69 \"  MM     ",
+    "                              MM    ' MM    MM MM'     MM     ",
     "                              MM       MMMMMMMM MM      MM     ",
     "                              MM       MM       MM      MM     ",
     "                              YM.   d9 YM    d9 MM      YM.  , ",
     "                               YMMMM9   YMMMM9 _MM_      YMMM9 "
 ];
 
+    function calculateDimensions() {
+      const container = document.getElementById('canvasContainer');
+      canvas = document.getElementById('myCanvas');
+      ctx = canvas.getContext('2d');
 
+      canvas.width = container.clientWidth;
+      canvas.height = container.clientHeight;
 
+      const textWidth = CUSTOM_TEXT[0].length;
+      const textHeight = CUSTOM_TEXT.length;
 
+      const availableWidth = canvas.width * (1 - 2 * MARGIN_PERCENTAGE / 100);
+      const availableHeight = canvas.height * (1 - 2 * MARGIN_PERCENTAGE / 100);
 
+      const fontSizeByWidth = availableWidth / textWidth;
+      const fontSizeByHeight = availableHeight / textHeight;
 
+      font_size = Math.floor(Math.min(fontSizeByWidth, fontSizeByHeight));
 
-function calculateDimensions() {
-    const container = document.getElementById('canvasContainer');
-    canvas = document.getElementById('myCanvas');
-    ctx = canvas.getContext('2d');
-
-    canvas.width = container.clientWidth;
-    canvas.height = container.clientHeight;
-
-    const textWidth = CUSTOM_TEXT[0].length;
-    const textHeight = CUSTOM_TEXT.length;
-
-    // Calcola la dimensione del font considerando il margine specificato
-    const availableWidth = canvas.width * (1 - 2 * MARGIN_PERCENTAGE / 100);
-    const availableHeight = canvas.height * (1 - 2 * MARGIN_PERCENTAGE / 100);
-
-    const fontSizeByWidth = availableWidth / textWidth;
-    const fontSizeByHeight = availableHeight / textHeight;
-
-    font_size = Math.floor(Math.min(fontSizeByWidth, fontSizeByHeight));
-
-    // Imposta una dimensione minima del font per dispositivi mobili
-    if (window.innerWidth <= 768) {
+      if (window.innerWidth <= 768) {
         font_size = Math.max(font_size, 8);
+      }
+
+      char_width = Math.ceil(font_size * 0.6);
+      char_height = Math.ceil(font_size);
+
+      canvas_width = Math.ceil(canvas.width / char_width);
+      canvas_height = Math.ceil(canvas.height / char_height);
     }
 
-    char_width = Math.ceil(font_size * 0.6);
-    char_height = Math.ceil(font_size);
-
-    canvas_width = Math.ceil(canvas.width / char_width);
-    canvas_height = Math.ceil(canvas.height / char_height);
-}
-
-function initializeWaveMap() {
-    wave_map = new Array(canvas_height);
-    for (let y = 0; y < canvas_height; y++) {
+    function initializeWaveMap() {
+      wave_map = new Array(canvas_height);
+      for (let y = 0; y < canvas_height; y++) {
         wave_map[y] = new Array(canvas_width).fill(0).map(() => Math.random() * MAX);
-    }
+      }
 
-    for (let step = 0; step < BLUR_STEPS; ++step) {
+      for (let step = 0; step < BLUR_STEPS; ++step) {
         for (let y = 0; y < canvas_height; ++y) {
-            for (let x = 0; x < canvas_width; ++x) {
-                let value = wave_map[y][x];
-                let left = wave_map[y][x - 1] || value;
-                let right = wave_map[y][x + 1] || value;
-                let top = (wave_map[y - 1] || [])[x] || value;
-                let bottom = (wave_map[y + 1] || [])[x] || value;
-                wave_map[y][x] = (value + left + right + top + bottom) / 5;
-            }
+          for (let x = 0; x < canvas_width; ++x) {
+            let value = wave_map[y][x];
+            let left = wave_map[y][x - 1] || value;
+            let right = wave_map[y][x + 1] || value;
+            let top = (wave_map[y - 1] || [])[x] || value;
+            let bottom = (wave_map[y + 1] || [])[x] || value;
+            wave_map[y][x] = (value + left + right + top + bottom) / 5;
+          }
         }
+      }
     }
 
-    let val_min = Math.min(...wave_map.flat());
-    let val_max = Math.max(...wave_map.flat());
-
-    for (let y = 0; y < canvas_height; ++y) {
-        for (let x = 0; x < canvas_width; ++x) {
-            wave_map[y][x] = Math.floor(map(wave_map[y][x], val_min, val_max, 0, CHAR.length - 1));
-        }
+    function setup() {
+      calculateDimensions();
+      initializeWaveMap();
     }
-}
-
-function setup() {
-    calculateDimensions();
-    initializeWaveMap();
-}
 
 function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -180,39 +163,17 @@ function draw() {
     requestAnimationFrame(draw);
 }
 
-function easeInOutQuad(t) {
-    return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
-}
-
-function lerp_char(a, b, t) {
-    let index_a = CHAR.indexOf(a);
-    let index_b = CHAR.indexOf(b);
-    if (index_a === -1 || index_b === -1) return t < 0.5 ? a : b;
-    let lerped_index = Math.floor(index_a + (index_b - index_a) * t);
-    return CHAR[lerped_index];
-}
-
-function map(value, in_min, in_max, out_min, out_max) {
-    return (value - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
-}
-
-function init() {
-    setup();
-    requestAnimationFrame(draw);
-}
-
-document.addEventListener('DOMContentLoaded', init);
-window.addEventListener('resize', () => {
-    const currentProgress = expansion_progress;
-    setup();
-    expansion_progress = currentProgress; // Mantiene il progresso attuale dell'animazione
-});
     function init() {
       setup();
       requestAnimationFrame(draw);
     }
-    init();
 
+    init();
+    window.addEventListener('resize', setup);
+
+    return () => {
+      window.removeEventListener('resize', setup);
+    };
   }, []);
 
   return (
