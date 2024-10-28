@@ -14,14 +14,14 @@ export default function Page() {
       {/* Contenitore dell'animazione */}
       <div
         id="container"
-        className="relative flex h-[85vh] w-full items-center justify-center overflow-x-hidden"
+        className="relative flex h-screen w-screen items-center justify-center overflow-x-hidden"
         style={{
-          background: 'linear-gradient(180deg, #222222, #111111)',
+          background: 'linear-gradient(180deg, #141414, #111111)',
         }}
       >
         <div
           id="canvasContainer"
-          className="absolute inset-[0.5rem] max-h-full w-[calc(100%-2rem)] overflow-hidden rounded-[1.5rem] border-2 border-[#181818] bg-[#141414] shadow-lg sm:inset-[1.5rem] sm:max-h-[85vh] sm:w-[calc(100%-3rem)] sm:rounded-[2rem] lg:inset-[3rem] lg:max-h-[85vh] lg:w-[calc(100%-6rem)] lg:rounded-[3rem]"
+          className="relative flex items-center justify-center overflow-hidden border-2 border-[#222222] bg-[#222222] shadow-lg shadow-darkBlue-900/20 inset-4 sm:inset-6 lg:inset-12 rounded-3xl"
         >
           <canvas id="myCanvas" className="w-full"></canvas>
           <AsciiAnimation />
