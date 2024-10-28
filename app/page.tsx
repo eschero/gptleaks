@@ -36,7 +36,6 @@ export default function Page() {
           </svg>
         </a>
       </div>
-      
       <Main posts={posts} />
     </div>
   )
