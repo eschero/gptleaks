@@ -172,7 +172,7 @@ const AsciiAnimation = () => {
             transition_completed = true
           }
 
-          ctx.fillStyle = isTextChar ? `rgba(64, 64, 255, ${opacity})` : 'rgba(105, 105, 105, 0.2)'
+          ctx.fillStyle = isTextChar ? `rgba(0, 141, 255, ${opacity})` : 'rgba(22, 38, 79, 0.2)'
           ctx.font = isTextChar ? `bold ${font_size}px monospace` : `${font_size}px monospace`
 
           ctx.fillText(char, x * char_width, (y + 1) * char_height)
