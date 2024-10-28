@@ -12,30 +12,17 @@ export default function Page() {
   return (
     <div
       id="container"
-      className="relative z-10 h-screen w-screen asciiheader-container text-center overflow-hidden max-h-[50vh] max-w-full"
-      style={{ background: 'linear-gradient(180deg, #141414, #111111)' }}
+      className="relative flex h-[85vh] w-full overflow-x-hidden justify-center items-center"
+      style={{
+        background: 'linear-gradient(180deg, #222222, #111111)',
+      }}
     >
       <div
         id="canvasContainer"
-        className="relative flex items-center justify-center overflow-hidden border-2 border-[#222222] bg-[#222222] shadow-lg shadow-darkBlue-900/20 inset-4 sm:inset-6 lg:inset-12 rounded-3xl"
+        className="absolute inset-[0.5rem] bg-[#141414] border-2 border-[#181818] rounded-[1.5rem] shadow-lg overflow-hidden w-[calc(100%-2rem)] max-h-full sm:inset-[1.5rem] sm:rounded-[2rem] sm:w-[calc(100%-3rem)] sm:max-h-[85vh] lg:inset-[3rem] lg:rounded-[3rem] lg:w-[calc(100%-6rem)] lg:max-h-[85vh]"
       >
         <canvas id="myCanvas" className="w-full"></canvas>
         <AsciiAnimation />
-
-        <a href="#wp--skip-link--target" className="btn-scroll">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth="2"
-            stroke="currentColor"
-            aria-hidden="true"
-            height="20"
-            className="inline text-slate-100"
-          >
-            <path strokeLinecap="round" strokeLinejoin="round" d="M19 13l-7 7-7-7m14-8l-7 7-7-7" />
-          </svg>
-        </a>
       </div>
 
       <Main posts={posts} />
