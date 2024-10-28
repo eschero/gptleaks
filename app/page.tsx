@@ -16,7 +16,7 @@ export default function Page() {
         id="container"
         className="relative flex h-[85vh] w-full items-center justify-center overflow-x-hidden"
         style={{
-          background: 'linear-gradient(180deg, #222222, #111111)',
+          background: 'linear-gradient(180deg, #030712, #030712)',
         }}
       >
         <div
