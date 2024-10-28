@@ -17,8 +17,9 @@ export default function Page() {
     >
       <div
         id="canvasContainer"
-        className="shadow-darkBlue-900/20 relative inset-4 flex items-center justify-center overflow-hidden rounded-3xl border-2 border-[#222222] bg-[#222222] shadow-lg sm:inset-6 lg:inset-12"
+        className="relative flex items-center justify-center overflow-hidden border-2 border-[#222222] bg-[#222222] shadow-lg shadow-darkBlue-900/20 inset-4 sm:inset-6 lg:inset-12 rounded-3xl"
       >
+        <canvas id="myCanvas" className="w-full"></canvas>
         <AsciiAnimation />
 
         <a href="#wp--skip-link--target" className="btn-scroll">
@@ -36,6 +37,7 @@ export default function Page() {
           </svg>
         </a>
       </div>
+
       <Main posts={posts} />
     </div>
   )
