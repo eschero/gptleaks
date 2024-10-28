@@ -1,4 +1,3 @@
-// Percorso: gptleaks-main/components/AsciiAnimation.tsx
 'use client'
 import { useEffect } from 'react'
 
@@ -41,7 +40,7 @@ const AsciiAnimation = () => {
       '                              MM       MMMMMMMM MM      MM     ',
       '                              MM       MM       MM      MM     ',
       '                              YM.   d9 YM    d9 MM      YM.  , ',
-      '                               YMMMM9   YMMMM9 _MM_      YMMM9 '
+      '                               YMMMM9   YMMMM9 _MM_      YMMM9 ',
     ]
 
     function calculateDimensions() {
@@ -153,7 +152,9 @@ const AsciiAnimation = () => {
               const text_char = CUSTOM_TEXT[y - text_y][x - text_x]
               char = lerp_char(wave_char, text_char, transition_progress)
               isTextChar = true
-              opacity = (expansion_progress - (EXPANSION_FRAMES - OPACITY_START_OFFSET)) / OPACITY_START_OFFSET
+              opacity =
+                (expansion_progress - (EXPANSION_FRAMES - OPACITY_START_OFFSET)) /
+                OPACITY_START_OFFSET
             }
           } else {
             if (
@@ -213,7 +214,10 @@ const AsciiAnimation = () => {
   }, [])
 
   return (
-    <div id="canvasContainer" className="relative flex items-center justify-center overflow-hidden border-2 border-[#222222] bg-[#222222] shadow-lg shadow-darkBlue-900/20 inset-4 sm:inset-6 lg:inset-12 rounded-3xl">
+    <div
+      id="canvasContainer"
+      className="shadow-darkBlue-900/20 relative inset-4 flex items-center justify-center overflow-hidden rounded-3xl border-2 border-[#222222] bg-[#222222] shadow-lg sm:inset-6 lg:inset-12"
+    >
       <canvas id="myCanvas" className="w-full"></canvas>
     </div>
   )
