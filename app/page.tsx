@@ -12,7 +12,7 @@ export default function Page() {
   return (
     <div
       id="container"
-      className="relative z-10 h-screen w-screen"
+      className="relative z-10 h-screen w-screen asciiheader-container text-center overflow-hidden max-h-[50vh] max-w-full"
       style={{ background: 'linear-gradient(180deg, #141414, #111111)' }}
     >
       <div
