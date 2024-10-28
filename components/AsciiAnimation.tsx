@@ -1,4 +1,5 @@
 // Percorso: gptleaks-main/components/AsciiAnimation.tsx
+"use client";
 import { useEffect } from 'react';
 
 const AsciiAnimation = () => {
