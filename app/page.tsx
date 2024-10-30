@@ -1,4 +1,3 @@
-// Percorso: gptleaks-main/app/page.tsx
 'use client'
 import { sortPosts, allCoreContent } from 'pliny/utils/contentlayer'
 import { allBlogs } from 'contentlayer/generated'
@@ -7,42 +6,42 @@ import Main from './Main'
 export default function Page() {
   const sortedPosts = sortPosts(allBlogs)
   const posts = allCoreContent(sortedPosts)
-
+  
   return (
     <>
-      {/* Contenitore dell'ASCII art */}
-      <div
-        id="container"
-        className="relative flex h-[85vh] w-full items-center justify-center overflow-x-hidden"
-        style={{
-          background: 'linear-gradient(180deg, #030712, #030712)',
-        }}
-      >
+      {/* Full-width ASCII art container */}
+      <div className="relative w-screen h-screen left-[50%] right-[50%] mx-[-50vw] mb-8">
         <div
-          id="asciiArtContainer"
-          className="absolute inset-[0.5rem] flex max-h-full w-[calc(100%-2rem)] items-center justify-center overflow-hidden rounded-[1.5rem] border-2 border-[#181818] bg-[#141414] shadow-lg sm:inset-[1.5rem] sm:max-h-[85vh] sm:w-[calc(100%-3rem)] sm:rounded-[2rem] lg:inset-[3rem] lg:max-h-[85vh] lg:w-[calc(100%-6rem)] lg:rounded-[3rem]"
+          className="h-[85vh] w-full flex items-center justify-center overflow-x-hidden"
+          style={{
+            background: 'linear-gradient(180deg, #030712, #030712)',
+          }}
         >
-          <pre
-            style={{
-              color: '#40CFFF', // Cambia il colore dell'ASCII art qui
-              fontFamily: 'monospace',
-              fontSize: '16px',
-              textAlign: 'center',
-              lineHeight: '1.2',
-              whiteSpace: 'pre',
-            }}
+          <div
+            className="absolute inset-0 flex items-center justify-center overflow-hidden border-2 border-[#181818] bg-[#141414] shadow-lg"
           >
-            {`_________       ___________             ______         
-__  ____/_________  /___  / ___________ ___  /_________
-_  / __ ___  __ \\  __/_  /  _  _ \\  __ \`/_  //_/_  ___/
- / /_/ / __  /_/ / /_ _  /___/  __/ /_/ /_  ,<  _(__  ) 
- \\____/  _  .___/\\__/ /_____\\___/\\__,_/ /_/|_| /____/  
+            <pre
+              style={{
+                color: '#40CFFF',
+                fontFamily: 'monospace',
+                fontSize: '16px',
+                textAlign: 'center',
+                lineHeight: '1.2',
+                whiteSpace: 'pre',
+              }}
+            >
+              {`_________       ___________             ______         
+**  **__/_________  /___  / ___________ ___  /_________
+*  / *_ ___  ** \\  **/_  /  *  * \\  __ \`/_  //_/_  ___/
+ / /_/ / __  /_/ / /_ *  /*__/  __/ /_/ /_  ,<  *(*_  ) 
+ \\____/  *  .*__/\\__/ /_____\\___/\\__,_/ /_/|_| /____/  
          /_/                                             `}
-          </pre>
+            </pre>
+          </div>
         </div>
       </div>
 
-      {/* Contenitore dei post */}
+      {/* Blog posts container */}
       <Main posts={posts} />
     </>
   )
