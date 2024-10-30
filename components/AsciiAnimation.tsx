@@ -36,7 +36,7 @@ const AsciiAnimation = () => {
       "_MM_    _MM_  YMMM9MM__MM_  _MM_  _MM_YMMM9'Yb_MM_  _MM_/     ",
       '                                ____     ____  ___  __  /M     ',
       '                               6MMMMb.  6MMMMb MM 6MM /MMMMM  ',
-      "                              6M'   Mb 6M'  Mb MM69   MM     ",
+      "                              6M'   Mb 6M'  Mb MM69 \"  MM     ",
       "                              MM    ' MM    MM MM'     MM     ",
       '                              MM       MMMMMMMM MM      MM     ',
       '                              MM       MM       MM      MM     ',
@@ -44,6 +44,7 @@ const AsciiAnimation = () => {
       '                               YMMMM9   YMMMM9 _MM_      YMMM9 ',
     ]
 
+    // Create container and canvas
     const container = document.createElement('div')
     container.id = 'canvasContainer'
     container.className =
@@ -54,6 +55,7 @@ const AsciiAnimation = () => {
     canvas.className = 'w-full'
     container.appendChild(canvas)
 
+    // Get the root element where the component is mounted and append the container
     const root = document.getElementById('root')
     if (root) {
       root.appendChild(container)
