@@ -10,9 +10,9 @@ export default function Page() {
   return (
     <>
       {/* Full-width ASCII art container */}
-      <div className="mx-[10%] mb-[10%] mt-0 h-[85vh] w-[80%] flex items-center justify-center overflow-x-hidden">
+      <div className="mx-[10%] mb-[10%] mt-0 flex h-[85vh] w-[80%] items-center justify-center overflow-x-hidden">
         <div
-          className="relative flex w-full h-full items-center justify-center overflow-hidden border-2 border-[#181818] bg-[#141414] shadow-lg"
+          className="relative flex h-full w-full items-center justify-center overflow-hidden border-2 border-[#181818] bg-[#141414] shadow-lg"
           style={{
             background: 'linear-gradient(180deg, #030712, #030712)',
           }}
@@ -38,7 +38,7 @@ export default function Page() {
       </div>
 
       {/* Headbar */}
-      <div className="headbar mb-8 w-full h-12 bg-gray-800 flex items-center justify-center text-white text-xl">
+      <div className="flex h-12 w-full items-center justify-center bg-gray-800 text-xl text-white mb-8">
         Headbar Content
       </div>
 
