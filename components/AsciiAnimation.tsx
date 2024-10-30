@@ -1,5 +1,4 @@
 'use client'
-
 import { useEffect } from 'react'
 
 const AsciiAnimation = () => {
@@ -44,26 +43,12 @@ const AsciiAnimation = () => {
       '                               YMMMM9   YMMMM9 _MM_      YMMM9 ',
     ]
 
-    // Create container and canvas
-    const container = document.createElement('div')
-    container.id = 'canvasContainer'
-    container.className =
-      'shadow-darkBlue-900/20 relative inset-4 flex items-center justify-center overflow-hidden rounded-3xl border-2 border-[#222222] bg-[#222222] shadow-lg sm:inset-6 lg:inset-12'
-
-    canvas = document.createElement('canvas')
-    canvas.id = 'myCanvas'
-    canvas.className = 'w-full'
-    container.appendChild(canvas)
-
-    // Get the root element where the component is mounted and append the container
-    const root = document.getElementById('root')
-    if (root) {
-      root.appendChild(container)
-    }
-
     function calculateDimensions() {
-      if (container) {
-        canvas = document.getElementById('myCanvas')
+      const container = document.getElementById('canvasContainer')
+      const canvasElement = document.getElementById('myCanvas')
+
+      if (container && canvasElement) {
+        canvas = canvasElement
         ctx = canvas.getContext('2d')
 
         canvas.width = container.clientWidth
@@ -115,18 +100,6 @@ const AsciiAnimation = () => {
     function setup() {
       calculateDimensions()
       initializeWaveMap()
-    }
-
-    function easeInOutQuad(t) {
-      return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t
-    }
-
-    function lerp_char(a, b, t) {
-      const index_a = CHAR.indexOf(a)
-      const index_b = CHAR.indexOf(b)
-      if (index_a === -1 || index_b === -1) return t < 0.5 ? a : b
-      const lerped_index = Math.floor(index_a + (index_b - index_a) * t)
-      return CHAR[lerped_index]
     }
 
     function draw() {
@@ -211,6 +184,22 @@ const AsciiAnimation = () => {
       requestAnimationFrame(draw)
     }
 
+    function easeInOutQuad(t) {
+      return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t
+    }
+
+    function lerp_char(a, b, t) {
+      const index_a = CHAR.indexOf(a)
+      const index_b = CHAR.indexOf(b)
+      if (index_a === -1 || index_b === -1) return t < 0.5 ? a : b
+      const lerped_index = Math.floor(index_a + (index_b - index_a) * t)
+      return CHAR[lerped_index]
+    }
+
+    function map(value, in_min, in_max, out_min, out_max) {
+      return ((value - in_min) * (out_max - out_min)) / (in_max - in_min) + out_min
+    }
+
     function init() {
       setup()
       requestAnimationFrame(draw)
@@ -221,13 +210,17 @@ const AsciiAnimation = () => {
 
     return () => {
       window.removeEventListener('resize', setup)
-      if (container && container.parentNode) {
-        container.parentNode.removeChild(container)
-      }
     }
   }, [])
 
-  return null
+  return (
+    <div
+      id="canvasContainer"
+      className="shadow-darkBlue-900/20 relative inset-4 flex items-center justify-center overflow-hidden rounded-3xl border-2 border-[#222222] bg-[#222222] shadow-lg sm:inset-6 lg:inset-12"
+    >
+      <canvas id="myCanvas" className="w-full"></canvas>
+    </div>
+  )
 }
 
 export default AsciiAnimation
