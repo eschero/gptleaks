@@ -6,7 +6,8 @@ const AsciiAnimation = () => {
   useEffect(() => {
     'use strict'
 
-    const CHAR = ' ~._^|\',-!:}+{=/*;[]7oc><i?)(rlt1jsIz3vCuJ%5aYn"298e0f&L6OS$VGZxTyUhP4wkDFdgqbRpmX@QAEHK#BNWM'
+    const CHAR =
+      ' ~._^|\',-!:}+{=/*;[]7oc><i?)(rlt1jsIz3vCuJ%5aYn"298e0f&L6OS$VGZxTyUhP4wkDFdgqbRpmX@QAEHK#BNWM'
     const MAX = CHAR.length * 2 - 2
     const FRAMES = 600
     const BLUR_STEPS = 40
@@ -35,7 +36,7 @@ const AsciiAnimation = () => {
       "_MM_    _MM_  YMMM9MM__MM_  _MM_  _MM_YMMM9'Yb_MM_  _MM_/     ",
       '                                ____     ____  ___  __  /M     ',
       '                               6MMMMb.  6MMMMb MM 6MM /MMMMM  ',
-      "                              6M'   Mb 6M'  Mb MM69 \"  MM     ",
+      "                              6M'   Mb 6M'  Mb MM69   MM     ",
       "                              MM    ' MM    MM MM'     MM     ",
       '                              MM       MMMMMMMM MM      MM     ',
       '                              MM       MM       MM      MM     ',
@@ -196,12 +197,8 @@ const AsciiAnimation = () => {
             transition_completed = true
           }
 
-          ctx.fillStyle = isTextChar
-            ? `rgba(0, 141, 255, ${opacity})`
-            : 'rgba(22, 38, 79, 0.2)'
-          ctx.font = isTextChar
-            ? `bold ${font_size}px monospace`
-            : `${font_size}px monospace`
+          ctx.fillStyle = isTextChar ? `rgba(0, 141, 255, ${opacity})` : 'rgba(22, 38, 79, 0.2)'
+          ctx.font = isTextChar ? `bold ${font_size}px monospace` : `${font_size}px monospace`
 
           ctx.fillText(char, x * char_width, (y + 1) * char_height)
           wave_map[y][x] = (wave_map[y][x] + 0.4) % CHAR.length
