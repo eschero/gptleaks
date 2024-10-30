@@ -13,7 +13,7 @@ const AsciiAnimation = () => {
     const EXPANSION_FRAMES = 240
     const TRANSITION_FRAMES = 150
     const OPACITY_START_OFFSET = 100
-    const MARGIN_PERCENTAGE = 20
+    const MARGIN_PERCENTAGE = 50
 
     let canvas, ctx, font_size, char_width, char_height
     let canvas_width, canvas_height
