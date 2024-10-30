@@ -1,238 +1,101 @@
-'use client';
-
-import { useEffect } from 'react';
+'use client'
+import { useEffect } from 'react'
 
 const AsciiAnimation = () => {
   useEffect(() => {
-    'use strict';
+    'use strict'
 
-    const CHAR = " ~._^|',-!:}+{=/*;[]7oc><i?)(rlt1jsIz3vCuJ%5aYn\"298e0f&L6OS$VGZxTyUhP4wkDFdgqbRpmX@QAEHK#BNWM";
-    const MAX = CHAR.length * 2 - 2;
-    const FRAMES = 600;
-    const BLUR_STEPS = 40;
-    const EXPANSION_FRAMES = 240;
-    const TRANSITION_FRAMES = 150;
-    const OPACITY_START_OFFSET = 100;
-    const MARGIN_PERCENTAGE = 20;
+    const CHAR = '    `~._^|\',-!:}+{=/*;[]7oc><i?)(rlt1jsIz3vCuJ%5aYn"298e0f&L6OS$VGZxTyUhP4wkDFdgqbRpmX@QAEHK#BNWM'
+    const MAX = CHAR.length * 2 - 2
+    const FRAMES = 300
+    const BLUR_STEPS = 40
 
-    let canvas, ctx, font_size, char_width, char_height;
-    let canvas_width, canvas_height;
-    let wave_map;
-    let expansion_progress = 0;
-    let transition_completed = false;
-
-    const CUSTOM_TEXT = [
-      '____    ____                                                   ',
-      "MM'    MM'                                                   ",
-      ' MM      MM                                                    ',
-      ' MM      MM ___   ___ ___  __    __      ___   ___  __         ',
-      ' MM      MM MM    MM MM 6MMb  6MMb   6MMMMb  MM    6MMb        ',
-      " MMMMMMMMMM  MM    MM  MM69 MM69 Mb 8M'     Mb  MMM9 Mb       ",
-      " MM      MM  MM    MM  MM'   MM'   MM     ,oMM  MM'   MM       ",
-      " MM      MM  MM    MM  MM    MM    MM ,6MM9'MM  MM    MM       ",
-      " MM      MM  MM    MM  MM    MM    MM MM'   MM  MM    MM       ",
-      ' MM      MM  YM.   MM  MM    MM    MM MM.  ,MM  MM    MM       ',
-      '_MM_    _MM_  YMMM9MM__MM_  _MM_  _MM_YMMM9\'Yb_MM_  _MM_/     ',
-      '                                ____     ____  ___  __  /M     ',
-      '                               6MMMMb.  6MMMMb MM 6MM /MMMMM  ',
-      "                              6M'   Mb 6M'  Mb MM69 \"  MM     ",
-      "                              MM    ' MM    MM MM'     MM     ",
-      '                              MM       MMMMMMMM MM      MM     ',
-      '                              MM       MM       MM      MM     ',
-      '                              YM.   d9 YM    d9 MM      YM.  , ',
-      '                               YMMMM9   YMMMM9 _MM_      YMMM9 ',
-    ];
-
-    const container = document.createElement('div');
-    container.id = 'canvasContainer';
-    container.className =
-      'shadow-darkBlue-900/20 relative inset-4 flex items-center justify-center overflow-hidden rounded-3xl border-2 border-[#222222] bg-[#222222] shadow-lg sm:inset-6 lg:inset-12';
-
-    canvas = document.createElement('canvas');
-    canvas.id = 'myCanvas';
-    canvas.className = 'w-full';
-    container.appendChild(canvas);
-
-    const root = document.getElementById('root');
-    if (root) {
-      root.appendChild(container);
-    }
+    let canvas, ctx, font_size, char_width, char_height
+    let canvas_width, canvas_height
+    let wave_map
 
     function calculateDimensions() {
-      if (container) {
-        canvas = document.getElementById('myCanvas');
-        ctx = canvas.getContext('2d');
+      const container = document.getElementById('canvasContainer')
+      const canvasElement = document.getElementById('myCanvas')
 
-        canvas.width = container.clientWidth;
-        canvas.height = container.clientHeight;
+      if (container && canvasElement) {
+        canvas = canvasElement
+        ctx = canvas.getContext('2d')
 
-        const textWidth = CUSTOM_TEXT[0].length;
-        const textHeight = CUSTOM_TEXT.length;
+        canvas.width = container.clientWidth
+        canvas.height = container.clientHeight
 
-        const availableWidth = canvas.width * (1 - (2 * MARGIN_PERCENTAGE) / 100);
-        const availableHeight = canvas.height * (1 - (2 * MARGIN_PERCENTAGE) / 100);
+        font_size = Math.floor(canvas.width / 100)
+        char_width = Math.ceil(font_size * 0.6)
+        char_height = Math.ceil(font_size)
 
-        const fontSizeByWidth = availableWidth / textWidth;
-        const fontSizeByHeight = availableHeight / textHeight;
-
-        font_size = Math.floor(Math.min(fontSizeByWidth, fontSizeByHeight));
-
-        if (window.innerWidth <= 768) {
-          font_size = Math.max(font_size, 8);
-        }
-
-        char_width = Math.ceil(font_size * 0.6);
-        char_height = Math.ceil(font_size);
-
-        canvas_width = Math.ceil(canvas.width / char_width);
-        canvas_height = Math.ceil(canvas.height / char_height);
+        canvas_width = Math.ceil(canvas.width / char_width)
+        canvas_height = Math.ceil(canvas.height / char_height)
       }
     }
 
     function initializeWaveMap() {
-      wave_map = new Array(canvas_height);
+      wave_map = new Array(canvas_height)
       for (let y = 0; y < canvas_height; y++) {
-        wave_map[y] = new Array(canvas_width).fill(0).map(() => Math.random() * MAX);
+        wave_map[y] = new Array(canvas_width).fill(0).map(() => Math.random() * MAX)
       }
 
       for (let step = 0; step < BLUR_STEPS; ++step) {
         for (let y = 0; y < canvas_height; ++y) {
           for (let x = 0; x < canvas_width; ++x) {
-            const value = wave_map[y][x];
-            const left = wave_map[y][x - 1] || value;
-            const right = wave_map[y][x + 1] || value;
-            const top = (wave_map[y - 1] || [])[x] || value;
-            const bottom = (wave_map[y + 1] || [])[x] || value;
-            wave_map[y][x] = (value + left + right + top + bottom) / 5;
+            const value = wave_map[y][x]
+            const left = wave_map[y][x - 1] || value
+            const right = wave_map[y][x + 1] || value
+            const top = (wave_map[y - 1] || [])[x] || value
+            const bottom = (wave_map[y + 1] || [])[x] || value
+            wave_map[y][x] = (value + left + right + top + bottom) / 5
           }
         }
       }
     }
 
     function setup() {
-      calculateDimensions();
-      initializeWaveMap();
-    }
-
-    function easeInOutQuad(t) {
-      return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
-    }
-
-    function lerp_char(a, b, t) {
-      const index_a = CHAR.indexOf(a);
-      const index_b = CHAR.indexOf(b);
-      if (index_a === -1 || index_b === -1) return t < 0.5 ? a : b;
-      const lerped_index = Math.floor(index_a + (index_b - index_a) * t);
-      return CHAR[lerped_index];
+      calculateDimensions()
+      initializeWaveMap()
     }
 
     function draw() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      ctx.font = `${font_size}px monospace`;
-
-      const center_x = Math.floor(canvas_width / 2);
-      const center_y = Math.floor(canvas_height / 2);
-      const max_distance = Math.sqrt(
-        Math.pow(canvas_width / 2, 2) + Math.pow(canvas_height / 2, 2)
-      );
-
-      const text_y = Math.floor((canvas_height - CUSTOM_TEXT.length) / 2) - 1;
-      const text_x = Math.floor((canvas_width - CUSTOM_TEXT[0].length) / 2);
+      ctx.clearRect(0, 0, canvas.width, canvas.height)
+      ctx.font = `${font_size}px monospace`
 
       for (let y = 0; y < canvas_height; ++y) {
         for (let x = 0; x < canvas_width; ++x) {
-          const distance = Math.sqrt(
-            Math.pow(x - center_x, 2) + Math.pow(y - center_y, 2)
-          );
-          const normalized_distance = distance / max_distance;
-
-          let char,
-            isTextChar = false,
-            opacity = 1;
-
-          if (expansion_progress <= EXPANSION_FRAMES + TRANSITION_FRAMES) {
-            const expansion_ratio =
-              expansion_progress <= EXPANSION_FRAMES
-                ? easeInOutQuad(expansion_progress / EXPANSION_FRAMES)
-                : 1;
-            const transition_progress =
-              expansion_progress > EXPANSION_FRAMES
-                ? (expansion_progress - EXPANSION_FRAMES) / TRANSITION_FRAMES
-                : 0;
-
-            if (normalized_distance <= expansion_ratio) {
-              const wave_char = CHAR[Math.floor(wave_map[y][x])];
-              const random_char = CHAR[Math.floor(Math.random() * CHAR.length)];
-              char = lerp_char(random_char, wave_char, transition_progress);
-            } else {
-              char = ' ';
-            }
-
-            if (
-              expansion_progress > EXPANSION_FRAMES - OPACITY_START_OFFSET &&
-              y >= text_y &&
-              y < text_y + CUSTOM_TEXT.length &&
-              x >= text_x &&
-              x < text_x + CUSTOM_TEXT[0].length &&
-              CUSTOM_TEXT[y - text_y][x - text_x] !== ' '
-            ) {
-              const wave_char = CHAR[Math.floor(wave_map[y][x])];
-              const text_char = CUSTOM_TEXT[y - text_y][x - text_x];
-              char = lerp_char(wave_char, text_char, transition_progress);
-              isTextChar = true;
-              opacity =
-                (expansion_progress - (EXPANSION_FRAMES - OPACITY_START_OFFSET)) /
-                OPACITY_START_OFFSET;
-            }
-          } else {
-            if (
-              y >= text_y &&
-              y < text_y + CUSTOM_TEXT.length &&
-              x >= text_x &&
-              x < text_x + CUSTOM_TEXT[0].length &&
-              CUSTOM_TEXT[y - text_y][x - text_x] !== ' '
-            ) {
-              char = CUSTOM_TEXT[y - text_y][x - text_x];
-              isTextChar = true;
-            } else {
-              char = CHAR[Math.floor(wave_map[y][x])];
-            }
-            transition_completed = true;
-          }
-
-          ctx.fillStyle = isTextChar
-            ? `rgba(0, 141, 255, ${opacity})`
-            : 'rgba(22, 38, 79, 0.2)';
-          ctx.font = isTextChar
-            ? `bold ${font_size}px monospace`
-            : `${font_size}px monospace`;
-
-          ctx.fillText(char, x * char_width, (y + 1) * char_height);
-          wave_map[y][x] = (wave_map[y][x] + 0.4) % CHAR.length;
+          const wave_char = CHAR[Math.floor(wave_map[y][x]) % CHAR.length]
+          ctx.fillStyle = 'rgba(22, 38, 79, 0.8)'
+          ctx.fillText(wave_char, x * char_width, (y + 1) * char_height)
+          wave_map[y][x] = (wave_map[y][x] + 0.4) % CHAR.length
         }
       }
 
-      expansion_progress++;
-      requestAnimationFrame(draw);
+      requestAnimationFrame(draw)
     }
 
     function init() {
-      setup();
-      requestAnimationFrame(draw);
+      setup()
+      requestAnimationFrame(draw)
     }
 
-    init();
-    window.addEventListener('resize', setup);
+    init()
+    window.addEventListener('resize', setup)
 
     return () => {
-      window.removeEventListener('resize', setup);
-      if (container && container.parentNode) {
-        container.parentNode.removeChild(container);
-      }
-    };
-  }, []);
+      window.removeEventListener('resize', setup)
+    }
+  }, [])
 
-  return null;
-};
+  return (
+    <div
+      id="canvasContainer"
+      className="shadow-darkBlue-900/20 relative inset-4 flex items-center justify-center overflow-hidden rounded-3xl border-2 border-[#222222] bg-[#222222] shadow-lg sm:inset-6 lg:inset-12"
+    >
+      <canvas id="myCanvas" className="w-full"></canvas>
+    </div>
+  )
+}
 
-export default AsciiAnimation;
+export default AsciiAnimation
