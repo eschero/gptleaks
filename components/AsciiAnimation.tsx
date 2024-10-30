@@ -25,7 +25,7 @@ const AsciiAnimation = () => {
         canvas.width = container.clientWidth
         canvas.height = container.clientHeight
 
-        font_size = Math.floor(canvas.width / 100) 
+        font_size = Math.floor(canvas.width / 100)
         char_width = Math.ceil(font_size * 0.6)
         char_height = Math.ceil(font_size)
 
