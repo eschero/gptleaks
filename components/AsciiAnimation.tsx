@@ -1,12 +1,12 @@
 'use client'
+
 import { useEffect } from 'react'
 
 const AsciiAnimation = () => {
   useEffect(() => {
     'use strict'
 
-    const CHAR =
-      ' ~._^|\',-!:}+{=/*;[]7oc><i?)(rlt1jsIz3vCuJ%5aYn"298e0f&L6OS$VGZxTyUhP4wkDFdgqbRpmX@QAEHK#BNWM'
+    const CHAR = ' ~._^|\',-!:}+{=/*;[]7oc><i?)(rlt1jsIz3vCuJ%5aYn"298e0f&L6OS$VGZxTyUhP4wkDFdgqbRpmX@QAEHK#BNWM'
     const MAX = CHAR.length * 2 - 2
     const FRAMES = 600
     const BLUR_STEPS = 40
@@ -43,12 +43,25 @@ const AsciiAnimation = () => {
       '                               YMMMM9   YMMMM9 _MM_      YMMM9 ',
     ]
 
-    function calculateDimensions() {
-      const container = document.getElementById('canvasContainer')
-      const canvasElement = document.getElementById('myCanvas')
+    // Create container and canvas
+    const container = document.createElement('div')
+    container.id = 'canvasContainer'
+    container.className = 'shadow-darkBlue-900/20 relative inset-4 flex items-center justify-center overflow-hidden rounded-3xl border-2 border-[#222222] bg-[#222222] shadow-lg sm:inset-6 lg:inset-12'
 
-      if (container && canvasElement) {
-        canvas = canvasElement
+    canvas = document.createElement('canvas')
+    canvas.id = 'myCanvas'
+    canvas.className = 'w-full'
+    container.appendChild(canvas)
+
+    // Get the root element where the component is mounted and append the container
+    const root = document.getElementById('root')
+    if (root) {
+      root.appendChild(container)
+    }
+
+    function calculateDimensions() {
+      if (container) {
+        canvas = document.getElementById('myCanvas')
         ctx = canvas.getContext('2d')
 
         canvas.width = container.clientWidth
@@ -102,6 +115,18 @@ const AsciiAnimation = () => {
       initializeWaveMap()
     }
 
+    function easeInOutQuad(t) {
+      return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t
+    }
+
+    function lerp_char(a, b, t) {
+      const index_a = CHAR.indexOf(a)
+      const index_b = CHAR.indexOf(b)
+      if (index_a === -1 || index_b === -1) return t < 0.5 ? a : b
+      const lerped_index = Math.floor(index_a + (index_b - index_a) * t)
+      return CHAR[lerped_index]
+    }
+
     function draw() {
       ctx.clearRect(0, 0, canvas.width, canvas.height)
       ctx.font = `${font_size}px monospace`
@@ -118,19 +143,15 @@ const AsciiAnimation = () => {
           const distance = Math.sqrt(Math.pow(x - center_x, 2) + Math.pow(y - center_y, 2))
           const normalized_distance = distance / max_distance
 
-          let char,
-            isTextChar = false,
-            opacity = 1
+          let char, isTextChar = false, opacity = 1
 
           if (expansion_progress <= EXPANSION_FRAMES + TRANSITION_FRAMES) {
-            const expansion_ratio =
-              expansion_progress <= EXPANSION_FRAMES
-                ? easeInOutQuad(expansion_progress / EXPANSION_FRAMES)
-                : 1
-            const transition_progress =
-              expansion_progress > EXPANSION_FRAMES
-                ? (expansion_progress - EXPANSION_FRAMES) / TRANSITION_FRAMES
-                : 0
+            const expansion_ratio = expansion_progress <= EXPANSION_FRAMES
+              ? easeInOutQuad(expansion_progress / EXPANSION_FRAMES)
+              : 1
+            const transition_progress = expansion_progress > EXPANSION_FRAMES
+              ? (expansion_progress - EXPANSION_FRAMES) / TRANSITION_FRAMES
+              : 0
 
             if (normalized_distance <= expansion_ratio) {
               const wave_char = CHAR[Math.floor(wave_map[y][x])]
@@ -152,9 +173,7 @@ const AsciiAnimation = () => {
               const text_char = CUSTOM_TEXT[y - text_y][x - text_x]
               char = lerp_char(wave_char, text_char, transition_progress)
               isTextChar = true
-              opacity =
-                (expansion_progress - (EXPANSION_FRAMES - OPACITY_START_OFFSET)) /
-                OPACITY_START_OFFSET
+              opacity = (expansion_progress - (EXPANSION_FRAMES - OPACITY_START_OFFSET)) / OPACITY_START_OFFSET
             }
           } else {
             if (
@@ -184,22 +203,6 @@ const AsciiAnimation = () => {
       requestAnimationFrame(draw)
     }
 
-    function easeInOutQuad(t) {
-      return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t
-    }
-
-    function lerp_char(a, b, t) {
-      const index_a = CHAR.indexOf(a)
-      const index_b = CHAR.indexOf(b)
-      if (index_a === -1 || index_b === -1) return t < 0.5 ? a : b
-      const lerped_index = Math.floor(index_a + (index_b - index_a) * t)
-      return CHAR[lerped_index]
-    }
-
-    function map(value, in_min, in_max, out_min, out_max) {
-      return ((value - in_min) * (out_max - out_min)) / (in_max - in_min) + out_min
-    }
-
     function init() {
       setup()
       requestAnimationFrame(draw)
@@ -210,17 +213,13 @@ const AsciiAnimation = () => {
 
     return () => {
       window.removeEventListener('resize', setup)
+      if (container && container.parentNode) {
+        container.parentNode.removeChild(container)
+      }
     }
   }, [])
 
-  return (
-    <div
-      id="canvasContainer"
-      className="shadow-darkBlue-900/20 relative inset-4 flex items-center justify-center overflow-hidden rounded-3xl border-2 border-[#222222] bg-[#222222] shadow-lg sm:inset-6 lg:inset-12"
-    >
-      <canvas id="myCanvas" className="w-full"></canvas>
-    </div>
-  )
+  return null
 }
 
 export default AsciiAnimation
