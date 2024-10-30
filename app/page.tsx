@@ -6,7 +6,7 @@ import Main from './Main'
 export default function Page() {
   const sortedPosts = sortPosts(allBlogs)
   const posts = allCoreContent(sortedPosts)
-  
+
   return (
     <>
       {/* Full-width ASCII art container */}
