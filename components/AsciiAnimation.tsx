@@ -1,4 +1,5 @@
 'use client'
+
 import { useEffect } from 'react'
 
 const AsciiAnimation = () => {
@@ -9,7 +10,6 @@ const AsciiAnimation = () => {
     const MAX = CHAR.length * 2 - 2
     const FRAMES = 300
     const BLUR_STEPS = 40
-
     let canvas, ctx, font_size, char_width, char_height
     let canvas_width, canvas_height
     let wave_map
@@ -17,18 +17,15 @@ const AsciiAnimation = () => {
     function calculateDimensions() {
       const container = document.getElementById('canvasContainer')
       const canvasElement = document.getElementById('myCanvas')
-
+      
       if (container && canvasElement) {
         canvas = canvasElement
         ctx = canvas.getContext('2d')
-
         canvas.width = container.clientWidth
         canvas.height = container.clientHeight
-
         font_size = Math.floor(canvas.width / 100)
         char_width = Math.ceil(font_size * 0.6)
         char_height = Math.ceil(font_size)
-
         canvas_width = Math.ceil(canvas.width / char_width)
         canvas_height = Math.ceil(canvas.height / char_height)
       }
