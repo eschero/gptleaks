@@ -1,7 +1,9 @@
+// Percorso: gptleaks-main/app/page.tsx
 'use client'
 import { sortPosts, allCoreContent } from 'pliny/utils/contentlayer'
 import { allBlogs } from 'contentlayer/generated'
 import Main from './Main'
+import AsciiAnimation from '../components/AsciiAnimation'
 
 export default function Page() {
   const sortedPosts = sortPosts(allBlogs)
@@ -9,38 +11,24 @@ export default function Page() {
 
   return (
     <>
-      {/* Full-width ASCII art container */}
-      <div className="mx-[10%] mt-0 flex h-[85vh] w-[80%] items-center justify-center overflow-x-hidden">
+      {/* Contenitore dell'animazione */}
+      <div
+        id="container"
+        className="relative flex h-[85vh] w-full items-center justify-center overflow-x-hidden"
+        style={{
+          background: 'linear-gradient(180deg, #030712, #030712)',
+        }}
+      >
         <div
-          className="relative flex h-full w-full items-center justify-center overflow-hidden border-2 border-[#181818] bg-[#141414] shadow-lg"
-          style={{
-            background: 'linear-gradient(180deg, #030712, #030712)',
-          }}
+          id="canvasContainer"
+          className="absolute inset-[0.5rem] max-h-full w-[calc(100%-2rem)] overflow-hidden rounded-[1.5rem] border-2 border-[#181818] bg-[#30712] shadow-lg sm:inset-[1.5rem] sm:max-h-[85vh] sm:w-[calc(100%-3rem)] sm:rounded-[2rem] lg:inset-[3rem] lg:max-h-[85vh] lg:w-[calc(100%-6rem)] lg:rounded-[3rem]"
         >
-          <pre
-            style={{
-              color: '#40CFFF',
-              fontFamily: 'monospace',
-              fontSize: '16px',
-              textAlign: 'center',
-              lineHeight: '1.2',
-              whiteSpace: 'pre',
-            }}
-          >
-            {`_________       ___________             ______         
-**  /**_______  /___  / ___________ ___  /_________
-*  / _*_  ** \\  **/_  /  *  * \\  __ \`/_  //_/_  ___/
- / /_/ / __  /_/ / /_ *  /*__/  __/ /_/ /_  ,<  *(*_  ) 
- \\____/  *  .*__/\\__/ /_____\\___/\\__,_/ /_/|_| /____/  
-         /_/                                             `}
-          </pre>
+          <canvas id="myCanvas" className="w-full"></canvas>
+          <AsciiAnimation />
         </div>
       </div>
-      {/* Headbar */}
-      <div className="mb-8 flex h-12 w-full items-center justify-center bg-gray-800 text-xl text-white">
-        Headbar Content
-      </div>
-      {/* Blog posts container */}
+
+      {/* Contenitore dei post */}
       <Main posts={posts} />
     </>
   )
