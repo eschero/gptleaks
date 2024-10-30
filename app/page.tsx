@@ -10,16 +10,14 @@ export default function Page() {
   return (
     <>
       {/* Full-width ASCII art container */}
-      <div className="relative w-screen h-screen left-[50%] right-[50%] mx-[-50vw] mb-8">
+      <div className="left-[50%] right-[50%] mx-[-50vw] mb-8 h-screen w-screen">
         <div
-          className="h-[85vh] w-full flex items-center justify-center overflow-x-hidden"
+          className="flex h-[85vh] w-full items-center justify-center overflow-x-hidden"
           style={{
             background: 'linear-gradient(180deg, #030712, #030712)',
           }}
         >
-          <div
-            className="absolute inset-0 flex items-center justify-center overflow-hidden border-2 border-[#181818] bg-[#141414] shadow-lg"
-          >
+          <div className="absolute inset-0 flex items-center justify-center overflow-hidden border-2 border-[#181818] bg-[#141414] shadow-lg">
             <pre
               style={{
                 color: '#40CFFF',
