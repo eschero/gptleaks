@@ -10,7 +10,7 @@ export default function Page() {
   return (
     <>
       {/* Full-width ASCII art container */}
-      <div className="mx-[10%] mb-[10%] mt-0 flex h-[85vh] w-[80%] items-center justify-center overflow-x-hidden">
+      <div className="mx-[10%] mt-0 flex h-[85vh] w-[80%] items-center justify-center overflow-x-hidden">
         <div
           className="relative flex h-full w-full items-center justify-center overflow-hidden border-2 border-[#181818] bg-[#141414] shadow-lg"
           style={{
