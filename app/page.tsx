@@ -36,12 +36,10 @@ export default function Page() {
           </pre>
         </div>
       </div>
-
       {/* Headbar */}
-      <div className="flex h-12 w-full items-center justify-center bg-gray-800 text-xl text-white mb-8">
+      <div className="mb-8 flex h-12 w-full items-center justify-center bg-gray-800 text-xl text-white">
         Headbar Content
       </div>
-
       {/* Blog posts container */}
       <Main posts={posts} />
     </>
