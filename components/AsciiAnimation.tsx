@@ -5,8 +5,8 @@ import { useEffect } from 'react'
 const AsciiAnimation = () => {
   useEffect(() => {
     'use strict'
-
-    const CHAR = '    `~._^|\',-!:}+{=/*;[]7oc><i?)(rlt1jsIz3vCuJ%5aYn"298e0f&L6OS$VGZxTyUhP4wkDFdgqbRpmX@QAEHK#BNWM'
+    const CHAR =
+      '    `~._^|\',-!:}+{=/*;[]7oc><i?)(rlt1jsIz3vCuJ%5aYn"298e0f&L6OS$VGZxTyUhP4wkDFdgqbRpmX@QAEHK#BNWM'
     const MAX = CHAR.length * 2 - 2
     const FRAMES = 300
     const BLUR_STEPS = 40
@@ -17,7 +17,7 @@ const AsciiAnimation = () => {
     function calculateDimensions() {
       const container = document.getElementById('canvasContainer')
       const canvasElement = document.getElementById('myCanvas')
-      
+
       if (container && canvasElement) {
         canvas = canvasElement
         ctx = canvas.getContext('2d')
@@ -36,7 +36,6 @@ const AsciiAnimation = () => {
       for (let y = 0; y < canvas_height; y++) {
         wave_map[y] = new Array(canvas_width).fill(0).map(() => Math.random() * MAX)
       }
-
       for (let step = 0; step < BLUR_STEPS; ++step) {
         for (let y = 0; y < canvas_height; ++y) {
           for (let x = 0; x < canvas_width; ++x) {
@@ -59,7 +58,6 @@ const AsciiAnimation = () => {
     function draw() {
       ctx.clearRect(0, 0, canvas.width, canvas.height)
       ctx.font = `${font_size}px monospace`
-
       for (let y = 0; y < canvas_height; ++y) {
         for (let x = 0; x < canvas_width; ++x) {
           const wave_char = CHAR[Math.floor(wave_map[y][x]) % CHAR.length]
@@ -68,7 +66,6 @@ const AsciiAnimation = () => {
           wave_map[y][x] = (wave_map[y][x] + 0.4) % CHAR.length
         }
       }
-
       requestAnimationFrame(draw)
     }
 
