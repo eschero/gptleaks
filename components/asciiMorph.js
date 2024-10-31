@@ -1,260 +1,218 @@
-/* eslint-disable no-redeclare */
+export default function initRotatingAscii(container) {
+  if (!container) return
 
-const AsciiMorph = (function () {
-  'use strict'
+  const logoArt = [
+    '                                                              ',
+    '                                                              ',
+    '                                                              ',
+    '                            ..                                ',
+    '                      .*@@@@@@@@@#-.                          ',
+    '                    -@@@@%+---=#@@@@+.                        ',
+    '                  .#@@@-..      .:#@@@%@@@@%*-.               ',
+    '                 .#@@*.         .=%@@@@@%@@@@@@%:             ',
+    '              .-+#@@*.       .+%@@@@+..    ..+@@@%..          ',
+    '          ..*@@@@@@@=     .+@@@@%+..          .+@@@:          ',
+    '         .*@@@#-.*@@=   .@@@@%=.     ..         =@@#          ',
+    '        :@@@+..  *@@=   .@@-.     .-#@@@*:.      %@@.         ',
+    '       .@@@:.    *@@=   .@%.  ..=@@@#-#@@@@#-.  .*@@-         ',
+    '       +@@*      *@@=   :@%..+@@@#.     .*@@@@%-.@@@.         ',
+    '       *@@=      *@@=   :@@@@@++@@@#:.     .*@@@@@@+          ',
+    '       *@@+      *@@=   -@@=     .=@@@#..     .=@@@@:.        ',
+    '       :@@@.    .+@@%.  -@%.       .#@+@@@%.      :@@@-        ',
+    '       .-@@@:    ..:#@@%+@%        #@=..:#@@+     .@@@:       ',
+    '        .:@@@@=.  ....:#@@@=      -@@-...-@@#      +@@*       ',
+    '          +@@@@@@+..     :#@@@+=@@@@@-   -@@#      -@@#.      ',
+    '         .@@@.-%@@@@*..   ..#@@@*:.%@:   -@@#      +@@+       ',
+    '         :@@#   .-#@@@@#:*@@@=..  .%@:   -@@#     :@@@.       ',
+    '         .@@%.     .:#@@@%=.      -@@:   -@@#   .+@@@:        ',
+    '          #@@=.       ....   ..-%@@@@.   -@@#.-#@@@#..        ',
+    '          :@@@=.           .=%@@@@+.     -@@@@@@@*..          ',
+    '           .#@@@+..    ..+@@@@%+..       *@@#+-..             ',
+    '            .:%@@@@@%%@@@@@%=..        .*@@#.                 ',
+    '               .-*%@@@@%@@@*.         -@@@%.                  ',
+    '                         *@@@@#=---+%@@@@=.                   ',
+    '                          .-%@@@@@@@@@#:                      ',
+    '                               ......                         ',
+    '                                                              ',
+    '                                                              ',
+    '                                                              ',
+  ]
 
-  var element = null
-  var canvasDimensions = {}
+  const textArt = [
+    '                                                                                    ',
+    '                                                                                    ',
+    '  .g8"""bgd `7MM"""Mq. MMP""MM""YMM `7MMF\'                        `7MM              ',
+    ".dP'     `M   MM   `MM.P'   MM   `7   MM                            MM              ",
+    'dM\'       `   MM   ,M9      MM        MM         .gP"Ya   ,6"Yb.    MM  ,MP\',pP"Ybd ',
+    'MM            MMmmdM9       MM        MM        ,M\'   Yb 8)   MM    MM ;Y   8I   `" ',
+    'MM.    `7MMF\' MM            MM        MM      , 8M""""""  ,pm9MM    MM;Mm   `YMMMa. ',
+    '`Mb.     MM   MM            MM        MM     ,M YM.    , 8M   MM    MM `Mb. L.   I8 ',
+    "  `\"bmmmdPY .JMML.        .JMML.    .JMMmmmmMMM  `Mbmmd' `Moo9^Yo..JMML. YA.M9mmmP' ",
+    '                                                                                    ',
+  ]
 
-  var renderedData = []
-  var framesToAnimate = []
-  var myTimeout = null
+  const DEPTH = 15
+  const chars = '@%#*+=-:. '.split('')
+  let angle = 0
 
-  /**
-   * Utils
-   */
+  function findCenter() {
+    let minX = logoArt[0].length,
+      maxX = 0
+    let minY = logoArt.length,
+      maxY = 0
 
-  function extend(target, source) {
-    for (var key in source) {
-      if (!(key in target)) {
-        target[key] = source[key]
-      }
-    }
-    return target
-  }
-
-  function repeat(pattern, count) {
-    if (count < 1) return ''
-    var result = ''
-    while (count > 1) {
-      if (count & 1) result += pattern
-      ;(count >>= 1), (pattern += pattern)
-    }
-    return result + pattern
-  }
-
-  function replaceAt(string, index, character) {
-    return string.substr(0, index) + character + string.substr(index + character.length)
-  }
-
-  /**
-   * AsciiMorph
-   */
-
-  function init(el, canvasSize) {
-    // Save the element
-    element = el
-    canvasDimensions = canvasSize
-  }
-
-  function squareOutData(data) {
-    var i
-    var renderDimensions = {
-      x: 0,
-      y: data.length,
-    }
-
-    // Calculate centering numbers
-    for (i = 0; i < data.length; i++) {
-      if (data[i].length > renderDimensions.x) {
-        renderDimensions.x = data[i].length
-      }
-    }
-
-    // Pad out right side of data to square it out
-    for (i = 0; i < data.length; i++) {
-      if (data[i].length < renderDimensions.x) {
-        data[i] = data[i] + repeat(' ', renderDimensions.x - data[i].length)
-      }
-    }
-
-    var paddings = {
-      x: Math.floor((canvasDimensions.x - renderDimensions.x) / 2),
-      y: Math.floor((canvasDimensions.y - renderDimensions.y) / 2),
-    }
-
-    // Left Padding
-    for (var i = 0; i < data.length; i++) {
-      data[i] = repeat(' ', paddings.x) + data[i] + repeat(' ', paddings.x)
-    }
-
-    // Pad out the rest of everything
-    for (var i = 0; i < canvasDimensions.y; i++) {
-      if (i < paddings.y) {
-        data.unshift(repeat(' ', canvasDimensions.x))
-      } else if (i > paddings.y + renderDimensions.y) {
-        data.push(repeat(' ', canvasDimensions.x))
-      }
-    }
-
-    return data
-  }
-
-  // Crushes the frame data by 1 unit.
-  function getMorphedFrame(data) {
-    var firstInLine,
-      lastInLine = null
-    var found = false
-    for (var i = 0; i < data.length; i++) {
-      var line = data[i]
-      firstInLine = line.search(/\S/)
-      if (firstInLine === -1) {
-        firstInLine = null
-      }
-
-      for (var j = 0; j < line.length; j++) {
-        if (line[j] != ' ') {
-          lastInLine = j
+    for (let y = 0; y < logoArt.length; y++) {
+      for (let x = 0; x < logoArt[0].length; x++) {
+        if (logoArt[y][x] !== ' ') {
+          minX = Math.min(minX, x)
+          maxX = Math.max(maxX, x)
+          minY = Math.min(minY, y)
+          maxY = Math.max(maxY, y)
         }
       }
+    }
 
-      if (firstInLine !== null && lastInLine !== null) {
-        data = crushLine(data, i, firstInLine, lastInLine)
-        found = true
+    return {
+      x: Math.floor((minX + maxX) / 2),
+      y: Math.floor((minY + maxY) / 2),
+      screenX: Math.floor(logoArt[0].length / 2),
+      screenY: Math.floor(logoArt.length / 2),
+    }
+  }
+
+  const center = findCenter()
+
+  function create3DPoints() {
+    const points = []
+    let minX = logoArt[0].length,
+      maxX = 0
+    let minY = logoArt.length,
+      maxY = 0
+
+    for (let y = 0; y < logoArt.length; y++) {
+      for (let x = 0; x < logoArt[0].length; x++) {
+        if (logoArt[y][x] !== ' ') {
+          minX = Math.min(minX, x)
+          maxX = Math.max(maxX, x)
+          minY = Math.min(minY, y)
+          maxY = Math.max(maxY, y)
+        }
       }
-
-      ;(firstInLine = null), (lastInLine = null)
     }
 
-    if (found) {
-      return data
-    } else {
-      return false
-    }
-  }
+    for (let y = 0; y < logoArt.length; y++) {
+      for (let x = 0; x < logoArt[0].length; x++) {
+        if (logoArt[y][x] !== ' ') {
+          points.push({
+            x: x - center.x,
+            y: y - center.y,
+            z: 0,
+            char: logoArt[y][x],
+            isFace: true,
+          })
 
-  function crushLine(data, line, start, end) {
-    var centers = {
-      x: Math.floor(canvasDimensions.x / 2),
-      y: Math.floor(canvasDimensions.y / 2),
-    }
+          points.push({
+            x: x - center.x,
+            y: y - center.y,
+            z: -DEPTH,
+            char: logoArt[y][x],
+            isFace: true,
+          })
 
-    var crushDirection = 1
-    if (line > centers.y) {
-      crushDirection = -1
-    }
-
-    var charA = data[line][start]
-    var charB = data[line][end]
-
-    data[line] = replaceAt(data[line], start, ' ')
-    data[line] = replaceAt(data[line], end, ' ')
-
-    if (!(end - 1 == start + 1) && !(start === end) && !(start + 1 === end)) {
-      data[line + crushDirection] = replaceAt(
-        data[line + crushDirection],
-        start + 1,
-        '+*/\\'.substr(Math.floor(Math.random() * '+*/\\'.length), 1)
-      )
-      data[line + crushDirection] = replaceAt(
-        data[line + crushDirection],
-        end - 1,
-        '+*/\\'.substr(Math.floor(Math.random() * '+*/\\'.length), 1)
-      )
-    } else if (
-      (start === end || start + 1 === end) &&
-      line + 1 !== centers.y &&
-      line - 1 !== centers.y &&
-      line !== centers.y
-    ) {
-      data[line + crushDirection] = replaceAt(
-        data[line + crushDirection],
-        start,
-        '+*/\\'.substr(Math.floor(Math.random() * '+*/\\'.length), 1)
-      )
-      data[line + crushDirection] = replaceAt(
-        data[line + crushDirection],
-        end,
-        '+*/\\'.substr(Math.floor(Math.random() * '+*/\\'.length), 1)
-      )
-    }
-
-    return data
-  }
-
-  function render(data) {
-    var ourData = squareOutData(data.slice())
-    renderSquareData(ourData)
-  }
-
-  function renderSquareData(data) {
-    element.innerHTML = ''
-    for (var i = 0; i < data.length; i++) {
-      element.innerHTML = element.innerHTML + data[i] + '\n'
-    }
-
-    renderedData = data
-  }
-
-  // Morph between whatever is current, to the new frame
-  function morph(data) {
-    clearTimeout(myTimeout)
-    var frameData = prepareFrames(data.slice())
-    animateFrames(frameData)
-  }
-
-  function prepareFrames(data) {
-    var deconstructionFrames = []
-    var constructionFrames = []
-
-    var clonedData = renderedData
-
-    // If its taking more than 100 frames, its probably somehow broken
-    // Get the deconscrution frames
-    for (var i = 0; i < 100; i++) {
-      var newData = getMorphedFrame(clonedData)
-      if (newData === false) {
-        break
+          if (
+            x === minX ||
+            x === maxX ||
+            y === minY ||
+            y === maxY ||
+            logoArt[y][x - 1] === ' ' ||
+            logoArt[y][x + 1] === ' ' ||
+            logoArt[y - 1]?.[x] === ' ' ||
+            logoArt[y + 1]?.[x] === ' '
+          ) {
+            for (let z = 1; z < DEPTH; z++) {
+              points.push({
+                x: x - center.x,
+                y: y - center.y,
+                z: -z,
+                char: logoArt[y][x],
+                isSide: true,
+              })
+            }
+          }
+        }
       }
-      deconstructionFrames.push(newData.slice(0))
-      clonedData = newData
     }
+    return points
+  }
 
-    // Get the constuction frames for the new data
-    var squareData = squareOutData(data)
-    constructionFrames.unshift(squareData.slice(0))
-    for (var i = 0; i < 100; i++) {
-      var newData = getMorphedFrame(squareData)
-      if (newData === false) {
-        break
+  const points = create3DPoints()
+
+  const totalHeight = Math.max(logoArt.length, textArt.length)
+  const width = logoArt[0].length + textArt[0].length + 4
+
+  let animationFrameId
+
+  function animate() {
+    angle += 0.02
+
+    const output = Array(totalHeight)
+      .fill()
+      .map(() => Array(width).fill(' '))
+    const zBuffer = Array(totalHeight)
+      .fill()
+      .map(() => Array(width).fill(-Infinity))
+
+    points.forEach((point) => {
+      const x2 = point.x * Math.cos(angle) + point.z * Math.sin(angle)
+      const z2 = -point.x * Math.sin(angle) + point.z * Math.cos(angle)
+
+      const x3 = Math.round(center.screenX + x2)
+      const y3 = Math.round(center.screenY + point.y)
+
+      if (x3 >= 0 && x3 < logoArt[0].length && y3 >= 0 && y3 < totalHeight) {
+        if (z2 > zBuffer[y3][x3]) {
+          zBuffer[y3][x3] = z2
+
+          let finalChar
+          if (point.isFace) {
+            const angleFactor = Math.abs(Math.cos(angle))
+            if (angleFactor > 0.2) {
+              finalChar = point.char
+            } else {
+              const charIndex = Math.min(chars.length - 1, Math.floor((chars.length - 1) * 0.7))
+              finalChar = chars[charIndex]
+            }
+          } else {
+            const brightness = 0.7
+            const charIndex = Math.min(
+              chars.length - 1,
+              Math.floor(brightness * (chars.length - 1))
+            )
+            finalChar = chars[charIndex]
+          }
+
+          output[y3][x3] = finalChar
+        }
       }
-      constructionFrames.unshift(newData.slice(0))
-      squareData = newData
-    }
+    })
 
-    return deconstructionFrames.concat(constructionFrames)
-  }
-
-  function animateFrames(frameData) {
-    framesToAnimate = frameData
-    animateFrame()
-  }
-
-  function animateFrame() {
-    myTimeout = setTimeout(function () {
-      renderSquareData(framesToAnimate[0])
-      framesToAnimate.shift()
-      if (framesToAnimate.length > 0) {
-        animateFrame()
+    const textStartY = Math.floor((totalHeight - textArt.length) / 2)
+    for (let y = 0; y < textArt.length; y++) {
+      for (let x = 0; x < textArt[0].length; x++) {
+        output[y + textStartY][x + logoArt[0].length + 4] = textArt[y][x]
       }
-    }, 20)
-
-    // framesToAnimate
-  }
-
-  function main(element, canvasSize) {
-    if (!element || !canvasSize) {
-      console.log('sorry, I need an element and a canvas size')
-      return
     }
 
-    init(element, canvasSize)
+    container.innerHTML = output.map((row) => row.join('')).join('\n')
+    animationFrameId = requestAnimationFrame(animate)
   }
 
-  return extend(main, {
-    render: render,
-    morph: morph,
-  })
-})()
+  animate()
 
-export default AsciiMorph
+  // Cleanup function
+  return () => {
+    if (animationFrameId) {
+      cancelAnimationFrame(animationFrameId)
+    }
+  }
+}
