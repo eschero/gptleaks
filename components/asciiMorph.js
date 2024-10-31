@@ -1,3 +1,5 @@
+/* eslint-disable no-redeclare */
+
 const AsciiMorph = (function () {
   'use strict'
 
