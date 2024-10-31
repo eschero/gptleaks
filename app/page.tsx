@@ -49,13 +49,14 @@ export default function Page() {
         ]
 
         const logo2 = [
-          '.------..------..------..------..------..------..------..------.',
-          '|G.--. ||P.--. ||T.--. ||L.--. ||E.--. ||A.--. ||K.--. ||S.--. |',
-          '| :/\\: || :/\\: || :/\\: || :/\\: || (\\/) || (\\/) || :/\\: || :/\\: |',
-          '| :\\/: || (__) || (__) || (__) || :\\/: || :\\/: || :\\/: || :\\/: |',
-          "| '--'G|| '--'P|| '--'T|| '--'L|| '--'E|| '--'A|| '--'K|| '--'S|",
-          "`------'`------'`------'`------'`------'`------'`------'`------'",
-        ]
+    '.g8"""bgd `7MM"""Mq. MMP""MM""YMM `7MMF\'                        `7MM              ',
+    '.dP\'     `M   MM   `MM.P\'   MM   `7   MM                            MM              ',
+    'dM\'       `   MM   ,M9      MM        MM         .gP"Ya   ,6"Yb.    MM  ,MP\',pP"Ybd ',
+    'MM            MMmmdM9       MM        MM        ,M\'   Yb 8)   MM    MM ;Y   8I   `" ',
+    'MM.    `7MMF\' MM            MM        MM      , 8M""""""  ,pm9MM    MM;Mm   `YMMMa. ',
+    '`Mb.     MM   MM            MM        MM     ,M YM.    , 8M   MM    MM `Mb. L.   I8 ',
+    '  `"bmmmdPY .JMML.        .JMML.    .JMMmmmmMMM  `Mbmmd\' `Moo9^Yo..JMML. YA.M9mmmP\''
+  ];
 
         // Render iniziale
         AsciiMorph.render(logo1)
