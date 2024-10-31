@@ -48,7 +48,7 @@ export default function Page() {
             left: 0,
             right: 0,
             bottom: 0,
-            fontFamily: 'monospace',
+            fontFamily: 'courier',
             textAlign: 'center',
             backgroundColor: 'transparent',
             color: '#0094ff',
