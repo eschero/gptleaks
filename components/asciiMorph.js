@@ -179,11 +179,11 @@ export default function initRotatingAscii(container) {
             if (angleFactor > 0.2) {
               finalChar = point.char
             } else {
-              const charIndex = Math.min(chars.length - 1, Math.floor((chars.length - 1) * 0.7))
+              const charIndex = Math.min(chars.length - 1, Math.floor((chars.length - 1) * 1))
               finalChar = chars[charIndex]
             }
           } else {
-            const brightness = 0.7
+            const brightness = 1
             const charIndex = Math.min(
               chars.length - 1,
               Math.floor(brightness * (chars.length - 1))
