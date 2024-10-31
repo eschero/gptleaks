@@ -5,7 +5,7 @@ import { useTheme } from 'next-themes'
 import { sortPosts, allCoreContent } from 'pliny/utils/contentlayer'
 import { allBlogs } from 'contentlayer/generated'
 import Main from './Main'
-import type { InitRotatingAscii } from '@/components/asciiMorph' // Aggiungi questo tipo
+import type InitRotatingAscii from '@/components/asciiMorph'
 
 export default function Page() {
   const sortedPosts = sortPosts(allBlogs)
