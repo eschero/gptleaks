@@ -1,4 +1,4 @@
-export default function initRotatingAscii(container) {
+export default function initRotatingAscii(container, theme) { 
   if (!container) return
 
   const logoArt = [
