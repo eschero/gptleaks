@@ -51,7 +51,7 @@ export default function Page() {
             fontFamily: 'courier',
             textAlign: 'center',
             backgroundColor: 'transparent',
-            color: '#0094ff',
+            color: '#ffffff',
             padding: '10px',
             lineHeight: '1',
             overflow: 'hidden',
