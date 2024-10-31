@@ -1,41 +1,47 @@
-// page.tsx
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef } from 'react'
+import { useTheme } from 'next-themes'
 import { sortPosts, allCoreContent } from 'pliny/utils/contentlayer'
 import { allBlogs } from 'contentlayer/generated'
 import Main from './Main'
+import type { InitRotatingAscii } from '@/components/asciiMorph' // Aggiungi questo tipo
 
 export default function Page() {
   const sortedPosts = sortPosts(allBlogs)
   const posts = allCoreContent(sortedPosts)
   const asciiContainer = useRef<HTMLPreElement>(null)
+  const { theme } = useTheme()
 
   useEffect(() => {
     let cleanup: (() => void) | undefined
 
     const initAscii = async () => {
-      if (asciiContainer.current) {
-        const { default: initRotatingAscii } = await import('@/components/asciiMorph')
-        cleanup = initRotatingAscii(asciiContainer.current)
+      try {
+        if (asciiContainer.current) {
+          const rotatingAscii = await import('@/components/asciiMorph')
+          cleanup = rotatingAscii.default(asciiContainer.current, theme)
+        }
+      } catch (error) {
+        console.error('Error initializing ASCII:', error)
       }
     }
 
     initAscii()
 
     return () => {
-      if (cleanup) {
+      if (typeof cleanup === 'function') {
         cleanup()
       }
     }
-  }, [])
+  }, [theme])
 
   return (
     <div>
       <div
         style={{
           width: '100%',
-          paddingTop: '30%', // Aspect ratio 100:30
+          paddingTop: '30%',
           position: 'relative',
           marginBottom: '20px',
         }}
@@ -51,12 +57,11 @@ export default function Page() {
             fontFamily: 'courier',
             textAlign: 'center',
             backgroundColor: 'transparent',
-            color: '#ffffff',
             padding: '10px',
             lineHeight: '1',
             overflow: 'hidden',
             margin: 0,
-            fontSize: 'calc(0.4vw + 2px)', // Modificato solo questo valore da 0.7vw a 0.5vw
+            fontSize: 'calc(0.4vw + 2px)',
             whiteSpace: 'pre',
             display: 'flex',
             alignItems: 'center',
