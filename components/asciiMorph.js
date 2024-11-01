@@ -35,7 +35,7 @@ export default function initRotatingAscii(container, theme) {
     '                               ......                         ',
     '                                                              ',
     '                                                              ',
-    '                                                              '
+    '                                                              ',
   ]
 
   const DEPTH = 15
