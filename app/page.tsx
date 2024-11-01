@@ -41,7 +41,7 @@ export default function Page() {
       <div
         style={{
           width: '100%',
-          paddingTop: window.innerWidth < 768 ? '80%' : '40%', // Modifica qui
+          paddingTop: '40%',
           position: 'relative',
           marginBottom: '20px',
         }}
@@ -58,10 +58,10 @@ export default function Page() {
             textAlign: 'center',
             backgroundColor: 'transparent',
             padding: '10px',
-            lineHeight: window.innerWidth < 768 ? '0.8' : '1', // Modifica qui
+            lineHeight: '1',
             overflow: 'hidden',
             margin: 0,
-            fontSize: window.innerWidth < 768 ? 'calc(0.6vw + 2px)' : 'calc(0.4vw + 2px)', // Modifica qui
+            fontSize: 'calc(0.4vw + 2px)',
             whiteSpace: 'pre',
             display: 'flex',
             alignItems: 'center',
