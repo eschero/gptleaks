@@ -41,7 +41,7 @@ export default function Page() {
       <div
         style={{
           width: '100%',
-          paddingTop: '30%',
+          paddingTop: '40%',
           position: 'relative',
           marginBottom: '20px',
         }}
