@@ -5,7 +5,6 @@ import { useTheme } from 'next-themes'
 import { sortPosts, allCoreContent } from 'pliny/utils/contentlayer'
 import { allBlogs } from 'contentlayer/generated'
 import Main from './Main'
-import type InitRotatingAscii from '@/components/asciiMorph'
 
 export default function Page() {
   const sortedPosts = sortPosts(allBlogs)
@@ -36,12 +35,26 @@ export default function Page() {
     }
   }, [theme])
 
+  useEffect(() => {
+    const handleResize = () => {
+      if (asciiContainer.current) {
+        const containerWidth = asciiContainer.current.clientWidth
+        const containerHeight = asciiContainer.current.clientHeight
+        const fontSize = Math.min(containerWidth / 100, containerHeight / 40) * 0.85
+        asciiContainer.current.style.fontSize = `${fontSize}px`
+      }
+    }
+    handleResize()
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
+
   return (
     <div>
       <div
         style={{
           width: '100%',
-          paddingTop: '40%',
+          paddingTop: '50%', // modificato da 40% per una migliore proporzione
           position: 'relative',
           marginBottom: '20px',
         }}
@@ -54,15 +67,13 @@ export default function Page() {
             left: 0,
             right: 0,
             bottom: 0,
-            fontFamily: 'courier',
+            fontFamily: 'courier, monospace',
             textAlign: 'center',
             backgroundColor: 'transparent',
             padding: '10px',
-            lineHeight: '1',
+            lineHeight: '1.2', // miglioramento leggibilità
             overflow: 'hidden',
             margin: 0,
-            fontSize: 'calc(0.4vw + 2px)',
-            whiteSpace: 'pre',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
