@@ -58,10 +58,10 @@ export default function Page() {
             textAlign: 'center',
             backgroundColor: 'transparent',
             padding: '10px',
-            lineHeight: '1',
+            lineHeight: window.innerWidth < 768 ? '0.8' : '1', // Modifica qui
             overflow: 'hidden',
             margin: 0,
-            fontSize: 'calc(0.4vw + 2px)',
+            fontSize: window.innerWidth < 768 ? 'calc(0.6vw + 2px)' : 'calc(0.4vw + 2px)', // Modifica qui
             whiteSpace: 'pre',
             display: 'flex',
             alignItems: 'center',
