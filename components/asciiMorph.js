@@ -189,9 +189,19 @@ export default function initRotatingAscii(container, theme) {
   function resizeToContainer() {
     const containerWidth = container.clientWidth
     const containerHeight = container.clientHeight
-    const fontSize = Math.min(containerWidth / width, containerHeight / totalHeight) * 0.95
+    const isMobile = window.innerWidth < 768
+    
+    // Fattori di scala diversi per mobile e desktop
+    const scaleFactor = isMobile ? 0.8 : 0.95
+    
+    const fontSize = Math.min(
+      containerWidth / width, 
+      containerHeight / totalHeight
+    ) * scaleFactor
+
     container.style.fontSize = `${fontSize}px`
-    container.style.lineHeight = '1'
+    container.style.lineHeight = isMobile ? '1.2' : '1'
+    container.style.padding = isMobile ? '5px' : '10px'
   }
 
   window.addEventListener('resize', resizeToContainer)
