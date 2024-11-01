@@ -170,7 +170,10 @@ export default function initRotatingAscii(container, theme) {
             }
           } else {
             const brightness = 0.7
-            const charIndex = Math.min(chars.length - 1, Math.floor(brightness * (chars.length - 1)))
+            const charIndex = Math.min(
+              chars.length - 1,
+              Math.floor(brightness * (chars.length - 1))
+            )
             finalChar = chars[charIndex]
           }
 
@@ -186,13 +189,9 @@ export default function initRotatingAscii(container, theme) {
   function resizeToContainer() {
     const containerWidth = container.clientWidth
     const containerHeight = container.clientHeight
-    const isMobile = window.innerWidth < 768
-    const scaleFactor = isMobile ? 0.8 : 0.95
-    const fontSize = Math.min(containerWidth / width, containerHeight / totalHeight) * scaleFactor
-
+    const fontSize = Math.min(containerWidth / width, containerHeight / totalHeight) * 0.95
     container.style.fontSize = `${fontSize}px`
-    container.style.lineHeight = isMobile ? '1.2' : '1'
-    container.style.padding = isMobile ? '5px' : '10px'
+    container.style.lineHeight = '1'
   }
 
   window.addEventListener('resize', resizeToContainer)
