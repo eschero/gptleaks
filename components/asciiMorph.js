@@ -38,19 +38,6 @@ export default function initRotatingAscii(container, theme) {
     '                                                              ',
   ]
 
-  const textArt = [
-    '                                                                                    ',
-    '                                                                                    ',
-    '  .g8"""bgd `7MM"""Mq. MMP""MM""YMM `7MMF\'                        `7MM              ',
-    ".dP'     `M   MM   `MM.P'   MM   `7   MM                            MM              ",
-    'dM\'       `   MM   ,M9      MM        MM         .gP"Ya   ,6"Yb.    MM  ,MP\',pP"Ybd ',
-    'MM            MMmmdM9       MM        MM        ,M\'   Yb 8)   MM    MM ;Y   8I   `" ',
-    'MM.    `7MMF\' MM            MM        MM      , 8M""""""  ,pm9MM    MM;Mm   `YMMMa. ',
-    '`Mb.     MM   MM            MM        MM     ,M YM.    , 8M   MM    MM `Mb. L.   I8 ',
-    "  `\"bmmmdPY .JMML.        .JMML.    .JMMmmmmMMM  `Mbmmd' `Moo9^Yo..JMML. YA.M9mmmP' ",
-    '                                                                                    ',
-  ]
-
   const DEPTH = 15
   const chars = '@%#*+=-:. '.split('')
   let angle = 0
@@ -146,9 +133,8 @@ export default function initRotatingAscii(container, theme) {
   }
 
   const points = create3DPoints()
-
-  const totalHeight = Math.max(logoArt.length, textArt.length)
-  const width = logoArt[0].length + textArt[0].length + 4
+  const width = logoArt[0].length
+  const totalHeight = logoArt.length
 
   let animationFrameId
 
@@ -169,7 +155,7 @@ export default function initRotatingAscii(container, theme) {
       const x3 = Math.round(center.screenX + x2)
       const y3 = Math.round(center.screenY + point.y)
 
-      if (x3 >= 0 && x3 < logoArt[0].length && y3 >= 0 && y3 < totalHeight) {
+      if (x3 >= 0 && x3 < width && y3 >= 0 && y3 < totalHeight) {
         if (z2 > zBuffer[y3][x3]) {
           zBuffer[y3][x3] = z2
 
@@ -196,23 +182,26 @@ export default function initRotatingAscii(container, theme) {
       }
     })
 
-    const textStartY = Math.floor((totalHeight - textArt.length) / 2)
-    for (let y = 0; y < textArt.length; y++) {
-      for (let x = 0; x < textArt[0].length; x++) {
-        output[y + textStartY][x + logoArt[0].length + 4] = textArt[y][x]
-      }
-    }
-
     container.innerHTML = output.map((row) => row.join('')).join('\n')
     animationFrameId = requestAnimationFrame(animate)
   }
 
+  function resizeToContainer() {
+    const containerWidth = container.clientWidth
+    const containerHeight = container.clientHeight
+    const fontSize = Math.min(containerWidth / width, containerHeight / totalHeight) * 0.95
+    container.style.fontSize = `${fontSize}px`
+    container.style.lineHeight = '1'
+  }
+
+  window.addEventListener('resize', resizeToContainer)
+  resizeToContainer()
   animate()
 
-  // Cleanup function
   return () => {
     if (animationFrameId) {
       cancelAnimationFrame(animationFrameId)
     }
+    window.removeEventListener('resize', resizeToContainer)
   }
 }
