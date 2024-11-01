@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useTheme } from 'next-themes'
 import { sortPosts, allCoreContent } from 'pliny/utils/contentlayer'
 import { allBlogs } from 'contentlayer/generated'
@@ -12,6 +12,16 @@ export default function Page() {
   const posts = allCoreContent(sortedPosts)
   const asciiContainer = useRef<HTMLPreElement>(null)
   const { theme } = useTheme()
+  const [isMobile, setIsMobile] = useState(false)
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768)
+    }
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+    return () => window.removeEventListener('resize', checkMobile)
+  }, [])
 
   useEffect(() => {
     let cleanup: (() => void) | undefined
@@ -41,7 +51,7 @@ export default function Page() {
       <div
         style={{
           width: '100%',
-          paddingTop: '40%',
+          paddingTop: isMobile ? '60%' : '40%',
           position: 'relative',
           marginBottom: '20px',
         }}
@@ -57,11 +67,8 @@ export default function Page() {
             fontFamily: 'courier',
             textAlign: 'center',
             backgroundColor: 'transparent',
-            padding: '10px',
-            lineHeight: '1',
             overflow: 'hidden',
             margin: 0,
-            fontSize: 'calc(0.4vw + 2px)',
             whiteSpace: 'pre',
             display: 'flex',
             alignItems: 'center',
