@@ -41,7 +41,7 @@ export default function Page() {
       <div
         style={{
           width: '100%',
-          paddingTop: '40%',
+          paddingTop: window.innerWidth < 768 ? '80%' : '40%', // Modifica qui
           position: 'relative',
           marginBottom: '20px',
         }}
