@@ -3,7 +3,7 @@ const siteMetadata = {
   title: 'GPTLeaks',
   author: 'Eschero',
   headerTitle: 'GPTLeaks',
-  description: 'All GPTLeaks and Researches about LLMs',
+  description: 'GPTLeaks and Researches about LLMs',
   language: 'en-us',
   theme: 'system', // system, dark or light
   siteUrl: 'https://gptleaks.com',
